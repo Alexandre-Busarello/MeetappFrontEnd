@@ -41,6 +41,12 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
   }
+
+  .react-datepicker-manager,
+  .react-datepicker-wrapper,
+  .react-datepicker__input-container {
+    width: 100%;
+  }
 `;
 
 export const rotate = keyframes`

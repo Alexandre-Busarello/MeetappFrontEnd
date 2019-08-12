@@ -25,24 +25,31 @@ export const Container = styled.div`
       margin: 0 15px;
     }
   }
+`;
+
+export const Content = styled.div`
+  p {
+    color: #fff;
+    font-size: 16px;
+    margin: 0 15px;
+  }
 
   div {
-    p {
-      color: #fff;
-      font-size: 16px;
-      margin: 0 15px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 25px;
+
+    svg {
+      margin-right: 5px;
     }
 
-    div {
+    span {
       display: flex;
-      flex-direction: row;
-      margin-top: 25px;
-
-      span {
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 12px;
-        margin: 0 15px;
-      }
+      align-content: center;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 12px;
+      margin: 0 15px;
     }
   }
 `;
@@ -77,14 +84,20 @@ export const CustomButton = styled.button`
 export const Banner = styled.div`
   height: 250px;
   display: flex;
-  margin-bottom: 20px;
   border-radius: 4px;
   align-items: center;
   justify-content: center;
   margin: 40px 15px 15px 15px;
+  background-color: #18141d;
 
   img {
+    border-radius: 4px;
     width: 100%;
     height: 100%;
+  }
+
+  span {
+    color: #5e5c62;
+    font-size: 18px;
   }
 `;

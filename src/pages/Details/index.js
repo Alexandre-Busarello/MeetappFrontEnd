@@ -1,11 +1,14 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { MdControlPoint } from 'react-icons/md';
+import { parseISO, isBefore } from 'date-fns';
+import { toast } from 'react-toastify';
+import { FaPen, FaTrash } from 'react-icons/fa';
+import { IoIosPin, IoMdCalendar } from 'react-icons/io';
 import PropTypes from 'prop-types';
 
 import history from '~/services/history';
 import { cancelMeetupRequest } from '~/store/modules/meetup/actions';
-import { Container, CustomButton, Banner } from './styles';
+import { Container, CustomButton, Banner, Content } from './styles';
 
 export default function Details({ match }) {
   const dispatch = useDispatch();
@@ -20,12 +23,30 @@ export default function Details({ match }) {
     return <Container />;
   }
 
-  function handleCancel(id) {
+  function isValidDate(date) {
+    const checkDate = parseISO(date);
+    const actualDate = new Date();
+
+    if (date && isBefore(checkDate, actualDate)) {
+      toast.warn(
+        'Não é possível alterar ou excluir um meetup que já aconteceu'
+      );
+      return false;
+    }
+    return true;
+  }
+
+  function handleCancel({ id, date }) {
+    if (!isValidDate(date)) {
+      return;
+    }
     dispatch(cancelMeetupRequest(id));
   }
 
-  function handleEdit(id) {
-    console.tron.log(id);
+  function handleEdit({ id, date }) {
+    if (!isValidDate(date)) {
+      return;
+    }
     history.push(`/meetup/${id}`);
   }
 
@@ -34,30 +55,36 @@ export default function Details({ match }) {
       <header>
         <strong>{meetup.title}</strong>
         <div>
-          <CustomButton
-            blue
-            type="button"
-            onClick={() => handleEdit(meetup.id)}
-          >
-            <MdControlPoint color="#FFF" size={18} />
+          <CustomButton blue type="button" onClick={() => handleEdit(meetup)}>
+            <FaPen color="#FFF" size={18} />
             Editar
           </CustomButton>
-          <CustomButton type="button" onClick={() => handleCancel(meetup.id)}>
-            <MdControlPoint color="#FFF" size={18} />
+          <CustomButton type="button" onClick={() => handleCancel(meetup)}>
+            <FaTrash color="#FFF" size={18} />
             Cancelar
           </CustomButton>
         </div>
       </header>
-      <div>
+      <Content>
         <Banner>
-          <img src={meetup.banner.url} alt="Banner do Meetup" />
+          {meetup.banner ? (
+            <img src={meetup.banner.url} alt="Banner do Meetup" />
+          ) : (
+            <span>IMAGEM NÃO ENCONTRADA</span>
+          )}
         </Banner>
         <p>{meetup.description}</p>
         <div>
-          <span>{meetup.dateFormatted}</span>
-          <span>{meetup.location}</span>
+          <span>
+            <IoMdCalendar color="#FFF" size={12} />
+            {meetup.dateFormatted}
+          </span>
+          <span>
+            <IoIosPin color="#FFF" size={12} />
+            {meetup.location}
+          </span>
         </div>
-      </div>
+      </Content>
     </Container>
   );
 }

@@ -7,19 +7,17 @@ import { Container } from './styles';
 
 export default function BannerPhotoInput() {
   const ref = useRef();
-  const { defaultValue, registerField } = useField('banner');
+  const { defaultValue, registerField, error } = useField('banner');
 
   const [file, setFile] = useState(defaultValue && defaultValue.id);
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
 
   useEffect(() => {
-    if (ref.current) {
-      registerField({
-        name: 'banner_id',
-        ref: ref.current,
-        path: 'dataset.file',
-      });
-    }
+    registerField({
+      name: 'banner_id',
+      ref: ref.current,
+      path: 'dataset.file',
+    });
   }, [registerField]);
 
   async function handleChange(e) {
@@ -54,6 +52,7 @@ export default function BannerPhotoInput() {
           onChange={handleChange}
           ref={ref}
         />
+        {error && <span>{error}</span>}
       </label>
     </Container>
   );

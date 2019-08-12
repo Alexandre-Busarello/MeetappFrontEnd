@@ -1,14 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
 import ReactDatePicker, { registerLocale } from 'react-datepicker';
 import PropTypes from 'prop-types';
-import { parseISO } from 'date-fns';
+import { parseISO, setHours, setMinutes } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import { useField } from '@rocketseat/unform';
 
 import 'react-datepicker/dist/react-datepicker.css';
-
-import { Container } from './styles';
 
 registerLocale('br', ptBR);
 
@@ -32,18 +30,22 @@ export default function DatePicker({ name, placeholderText }) {
   }, [fieldName, registerField]);
 
   return (
-    <Container>
+    <>
       <ReactDatePicker
         name={name}
         selected={selected}
-        dateFormat="dd/MM/yyyy"
+        dateFormat="dd/MM/yyyy HH:mm"
+        showTimeSelect
+        timeFormat="HH:mm"
+        timeIntervals={60}
         onChange={date => setSelected(date)}
         placeholderText={placeholderText}
         locale="br"
+        minDate={new Date()}
         ref={ref}
       />
       {error && <span>{error}</span>}
-    </Container>
+    </>
   );
 }
 
