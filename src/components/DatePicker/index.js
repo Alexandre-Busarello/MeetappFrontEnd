@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import ReactDatePicker, { registerLocale } from 'react-datepicker';
 import PropTypes from 'prop-types';
-import { parseISO, setHours, setMinutes } from 'date-fns';
+import { parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import { useField } from '@rocketseat/unform';
@@ -27,12 +27,12 @@ export default function DatePicker({ name, placeholderText }) {
         pickerRef.clear();
       },
     });
-  }, [fieldName, registerField]);
+  }, [ref.current, fieldName]); // eslint-disable-line
 
   return (
     <>
       <ReactDatePicker
-        name={name}
+        name={fieldName}
         selected={selected}
         dateFormat="dd/MM/yyyy HH:mm"
         showTimeSelect

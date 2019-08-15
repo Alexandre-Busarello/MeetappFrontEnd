@@ -9,15 +9,15 @@ export function* updateProfile({ payload }) {
   try {
     const { name, email, avatar_id, ...rest } = payload.data;
 
-    if (rest.oldPassword && !rest.password) {
-      toast.warn('É necessário informar uma nova senha para trocar.');
-      return;
-    }
+    // if (rest.oldPassword && !rest.password) {
+    //   toast.warn('É necessário informar uma nova senha para trocar.');
+    //   return;
+    // }
 
-    if (rest.oldPassword && rest.password && !rest.confirmPassword) {
-      toast.warn('A confirmação da nova senha é obrigatória.');
-      return;
-    }
+    // if (rest.oldPassword && rest.password && !rest.confirmPassword) {
+    //   toast.warn('A confirmação da nova senha é obrigatória.');
+    //   return;
+    // }
 
     const profile = Object.assign(
       { name, email, avatar_id },

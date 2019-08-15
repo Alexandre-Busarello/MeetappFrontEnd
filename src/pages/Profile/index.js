@@ -1,10 +1,37 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
+import * as Yup from 'yup';
 
 import { MdControlPoint } from 'react-icons/md';
 import { Container } from './styles';
 import { updateProfileRequest } from '~/store/modules/user/actions';
+
+const schema = Yup.object().shape({
+  name: Yup.string().required('dadsadsa'),
+  email: Yup.string(),
+  oldPassword: Yup.string().min(6, 'O campo precisa ter no mínimo 6 digitos'),
+  password: Yup.string()
+    .min(6)
+    .when('oldPassword', (oldPassword, field) =>
+      oldPassword
+        ? field
+            .min(6, 'O campo precisa ter no mínimo 6 digitos')
+            .required('O campo de nova senha é obrigatório')
+        : field
+    ),
+  confirmPassword: Yup.string().when('password', (password, field) =>
+    password
+      ? field
+          .min(6, 'O campo precisa ter no mínimo 6 digitos')
+          .required('A confirmação da senha é obrigatória')
+          .oneOf(
+            [Yup.ref('password')],
+            'A confirmação da senha precisa ser igual a senha digitada'
+          )
+      : field
+  ),
+});
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -16,9 +43,9 @@ export default function Profile() {
 
   return (
     <Container>
-      <Form initialData={profile} onSubmit={handleSubmit}>
+      <Form schema={schema} initialData={profile} onSubmit={handleSubmit}>
         <div>
-          <Input name="name" placeholder="Nome completo" />
+          <Input name="name" type="text" placeholder="Nome completo" />
           <Input
             name="email"
             type="email"

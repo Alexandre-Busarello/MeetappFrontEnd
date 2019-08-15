@@ -7,7 +7,7 @@ import { Container } from './styles';
 
 export default function BannerPhotoInput() {
   const ref = useRef();
-  const { defaultValue, registerField, error } = useField('banner');
+  const { fieldName, defaultValue, registerField, error } = useField('banner');
 
   const [file, setFile] = useState(defaultValue && defaultValue.id);
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
@@ -18,7 +18,7 @@ export default function BannerPhotoInput() {
       ref: ref.current,
       path: 'dataset.file',
     });
-  }, [registerField]);
+  }, [ref.current, fieldName]); // eslint-disable-line
 
   async function handleChange(e) {
     const data = new FormData();
@@ -45,6 +45,7 @@ export default function BannerPhotoInput() {
         )}
 
         <input
+          name={fieldName}
           type="file"
           id="banner"
           accept="image/*"
